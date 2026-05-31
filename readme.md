@@ -1,19 +1,10 @@
-# Dockerized Flask Application with GitHub Actions CI
+# Dockerized Flask Application with GitHub Actions and Amazon ECR
 
 ## Overview
 
-This project demonstrates a basic CI pipeline using GitHub Actions and Docker.
+This project demonstrates a Continuous Integration (CI) pipeline using GitHub Actions, Docker, and Amazon Elastic Container Registry (ECR).
 
-A simple Flask application is containerized using Docker. Whenever code is pushed to the main branch, GitHub Actions automatically triggers a workflow that builds the Docker image and validates that the application can be successfully containerized.
-
-This project was built to gain hands-on experience with:
-
-* Docker
-* GitHub Actions
-* Continuous Integration (CI)
-* Containerized Application Development
-
----
+Whenever code is pushed to the main branch, GitHub Actions automatically builds a Docker image and publishes it to Amazon ECR, making it available for deployment to container orchestration platforms such as Amazon EKS.
 
 ## Architecture
 
@@ -27,24 +18,44 @@ Git Push
 GitHub Repository
     │
     ▼
-GitHub Actions Workflow
+GitHub Actions
     │
     ▼
-Docker Image Build
+Docker Build
     │
     ▼
-Build Success / Failure
+Amazon ECR
 ```
+
+## Project Objectives
+
+* Containerize a Python Flask application
+* Automate Docker image builds using GitHub Actions
+* Securely authenticate with AWS using GitHub Secrets
+* Push Docker images to Amazon ECR automatically
+* Build the foundation for a future EKS and GitOps deployment pipeline
 
 ---
 
-## Project Structure
+## Technology Stack
+
+* Python Flask
+* Docker
+* GitHub Actions
+* AWS ECR
+* Git
+* Linux
+
+---
+
+## Repository Structure
 
 ```text
 .
 ├── app.py
 ├── requirements.txt
 ├── Dockerfile
+├── README.md
 └── .github
     └── workflows
         └── docker-build.yml
@@ -54,132 +65,150 @@ Build Success / Failure
 
 ## Application
 
-### app.py
+A simple Flask application exposing a web endpoint.
 
-A simple Flask application exposing a single endpoint:
+### Run Locally
 
-```python
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "DevOps Project Running"
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-```
-
----
-
-## Docker Configuration
-
-### Build Docker Image
+Build image:
 
 ```bash
-docker build -t flask-demo .
+docker build -t docker-test-ecr .
 ```
 
-### Run Container
+Run container:
 
 ```bash
-docker run -p 5000:5000 flask-demo
+docker run -p 5000:5000 docker-test-ecr
 ```
 
-### Verify Application
-
-Open:
+Access application:
 
 ```text
 http://localhost:5000
 ```
 
-Expected Output:
-
-```text
-DevOps Project Running
-```
-
 ---
 
-## GitHub Actions Workflow
+## CI Pipeline Workflow
 
 The workflow is triggered automatically whenever code is pushed to the main branch.
 
-### Workflow Steps
+### Pipeline Stages
 
 1. Checkout source code
-2. Build Docker image
-3. Verify build completion
+2. Configure AWS credentials
+3. Authenticate with Amazon ECR
+4. Build Docker image
+5. Tag Docker image
+6. Push Docker image to ECR
 
-### Workflow File
-
-```yaml
-name: Docker Build
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
-
-    - name: Build Docker Image
-      run: docker build -t flask-demo .
-```
-
----
-
-## CI Pipeline Flow
+### Workflow Diagram
 
 ```text
 Code Push
    │
    ▼
-GitHub Actions Triggered
+GitHub Actions
    │
    ▼
-Checkout Repository
+Docker Build
    │
    ▼
-Build Docker Image
+Image Tagging
    │
    ▼
-Pipeline Success
+Amazon ECR Login
+   │
+   ▼
+Push Image
 ```
 
 ---
 
-## Skills Demonstrated
+## GitHub Secrets
 
-* Git Version Control
-* GitHub Actions
-* CI Pipeline Creation
-* Docker Image Build Process
-* Containerization
-* Linux Command Line
-* DevOps Fundamentals
+The following repository secrets are configured:
+
+```text
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+```
+
+These credentials are consumed securely by GitHub Actions during workflow execution.
+
+---
+
+## Amazon ECR Repository
+
+Docker images are pushed to:
+
+```text
+915370161276.dkr.ecr.us-east-1.amazonaws.com/docker-test-ecr
+```
+
+Images stored in ECR can later be consumed by Amazon EKS deployments.
+
+---
+
+## Key Learning Outcomes
+
+Through this project, the following concepts were implemented and validated:
+
+* Docker image creation
+* Containerization best practices
+* GitHub Actions workflow development
+* CI pipeline automation
+* AWS credential management
+* Amazon ECR authentication
+* Automated image publishing
+* Infrastructure integration with cloud-native services
 
 ---
 
 ## Future Enhancements
 
-* Add automated testing stage
-* Push Docker image to Amazon ECR
-* Deploy image to Amazon EKS
-* Implement GitOps using ArgoCD
-* Add monitoring and observability
+Planned improvements include:
+
+* Automated application testing
+* Image vulnerability scanning
+* Amazon EKS deployment
+* Kubernetes manifests
+* Ingress configuration
+* ArgoCD integration
+* GitOps workflow implementation
+* Rolling deployments
+* Monitoring and observability
 
 ---
 
-## Learning Outcome
+## End Goal Architecture
 
-This project helped reinforce Docker fundamentals and introduced Continuous Integration using GitHub Actions. It serves as the foundation for building a complete CI/CD pipeline involving Amazon ECR, Amazon EKS, and ArgoCD.
+```text
+Developer
+    │
+    ▼
+GitHub
+    │
+    ▼
+GitHub Actions
+    │
+    ▼
+Docker Build
+    │
+    ▼
+Amazon ECR
+    │
+    ▼
+Amazon EKS
+    │
+    ▼
+ArgoCD
+    │
+    ▼
+Production Deployment
+```
 
+## Author
+
+Built as a hands-on DevOps learning project to gain practical experience with containerization, CI pipelines, AWS services, and cloud-native deployment workflows.
