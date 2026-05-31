@@ -212,3 +212,6 @@ Production Deployment
 ## Author
 
 Built as a hands-on DevOps learning project to gain practical experience with containerization, CI pipelines, AWS services, and cloud-native deployment workflows.
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/020562d8-5ac7-4e14-8b3c-6501232a6366" />
+
