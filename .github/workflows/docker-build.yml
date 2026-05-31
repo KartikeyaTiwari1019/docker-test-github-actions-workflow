@@ -9,7 +9,7 @@ jobs:
 build-and-push:
 runs-on: ubuntu-latest
 
-```
+
 steps:
   - name: Checkout Source Code
     uses: actions/checkout@v4
@@ -38,5 +38,3 @@ steps:
     run: |
       docker push \
       915370161276.dkr.ecr.us-east-1.amazonaws.com/docker-test-ecr:latest
-```
-
