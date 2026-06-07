@@ -36,4 +36,4 @@ jobs:
 
     - name: Push Docker Image to ECR
       run: |
-        docker push 915370161276.dkr.ecr.us-east-1.amazonaws.com/docker-test-ecr:latest
+        docker push 915370161276.dkr.ecr.us-east-1.amazonaws.com/docker-test-ecr:${IMAGE_TAG}
